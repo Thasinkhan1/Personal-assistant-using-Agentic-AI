@@ -1,0 +1,6 @@
+.venv/
+.env
+jarvis_DB
+Progress.txt
+PyWhatKit_DB.txt
+contact.json
