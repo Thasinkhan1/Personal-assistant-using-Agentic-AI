@@ -32,3 +32,4 @@ def send_whatsapp(name: str, message: str):
         return f"WhatsApp message sent to {name}"
     except Exception as e:
         return str(e)
+    

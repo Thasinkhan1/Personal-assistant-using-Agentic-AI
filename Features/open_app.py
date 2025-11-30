@@ -1,18 +1,18 @@
-import os
+from AppOpener import open, close
+from langchain_core.tools import tool
 
-APP_PATHS = {
-    "youtube": "https://youtube.com",
-    "chrome": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-    "spotify": "C:\\Users\\User\\AppData\\Roaming\\Spotify\\Spotify.exe",
-    "Brave":"D:\\Dowloads"
-}
+@tool
+def open_app(name:str):
+    '''open a app that given you'''
+    if name:
+        open(name)
+    else:
+        print("Please give me the app name")
 
-def open_app(app_name: str):
-    app_name = app_name.lower()
-    if app_name in APP_PATHS:
-        os.startfile(APP_PATHS[app_name])
-        return f"Opening {app_name}"
-    return f"App '{app_name}' not found."
-
-
-print(open_app("brave"))
+@tool       
+def close_app(name:str):
+    '''Close a app from the given name'''
+    if name:
+        close(name)
+    else:
+        return "There is no app open with the name of {name}"

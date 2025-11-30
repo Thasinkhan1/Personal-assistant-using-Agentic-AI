@@ -10,6 +10,8 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langsmith import uuid7
 from Features.call import make_call
+from Features.open_app import open_app, close_app
+from Gmail.manage_mail import manage_email
 from dotenv import load_dotenv
 import os
 import sqlite3
@@ -37,7 +39,7 @@ class ChatState(TypedDict):
     
 search_tool = DuckDuckGoSearchRun()
 
-tools = [search_tool, make_call]
+tools = [search_tool, make_call, open_app, close_app, manage_email]
 model_with_tools = model.bind_tools(tools)
 
 
@@ -66,7 +68,6 @@ graph.add_edge('tools', 'chat_node')
 
 jarvis = graph.compile(checkpointer=checkpointer)
 
-out = jarvis.invoke({'messages':[HumanMessage(content='Hlo how are you')]},config=CONFIG)
+out = jarvis.invoke({'messages':[HumanMessage(content='Hi jarvis open instagram and also manage my emails')]},config=CONFIG)
 
 print(out['messages'][-1].content)
-print(out)
