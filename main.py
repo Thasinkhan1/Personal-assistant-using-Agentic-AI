@@ -16,19 +16,18 @@ from dotenv import load_dotenv
 import os
 import sqlite3
 import uuid
-
+import time
 
 load_dotenv()
-# audio = speech_to_text()
+
 
 def generate_thread_id():
-    thread_id = uuid7()
-    return thread_id
+    return uuid7()
 
 CONFIG = {
     'configurable':{'thread_id':generate_thread_id()},
     'metadata': {'thread_id':generate_thread_id()},
-    'run_name':'chat_turn'
+    'run_name':'Voice_turn'
 }
 
 #print(text_to_speech(audio)) working good 
@@ -68,6 +67,39 @@ graph.add_edge('tools', 'chat_node')
 
 jarvis = graph.compile(checkpointer=checkpointer)
 
-out = jarvis.invoke({'messages':[HumanMessage(content='Hi jarvis open instagram and also manage my emails')]},config=CONFIG)
+print("Jarvis is now listening... say 'stop' to exit.\n")
 
-print(out['messages'][-1].content)
+#print(text_to_speech(audio)) working good 
+
+# out = jarvis.invoke({'messages':[HumanMessage(content='Hi jarvis open instagram and also manage my emails')]},config=CONFIG)
+
+#out = jarvis.invoke({'messages':[HumanMessage(content=audio)]},config=CONFIG)
+
+#print(text_to_speech(out['messages'][-1].content))
+
+while True:
+    audio = speech_to_text()
+    time.sleep(0.5)
+    if not audio:
+        continue
+    
+    print(f"User: {audio}")
+    
+    if audio.lower() in ['exit', 'bye', 'quit', 'stop']:
+        out = jarvis.invoke({'messages': [HumanMessage(content="Ok jarvis Thankyou for helping me")]},config=CONFIG)
+        text_to_speech(out['messages'][-1].content)
+        break
+        
+    try:
+        result = jarvis.invoke(
+            {'messages':[HumanMessage(content=audio)]},
+            config=CONFIG
+        )
+        
+        ai_msg  = result['messages'][-1].content
+        print(f"Jarvis: {ai_msg}")
+        text_to_speech(ai_msg)
+    except Exception as e:
+        print(f"Error is: {e}")
+        text_to_speech("Sorry sir, Something went Wrong please wait")
+        
