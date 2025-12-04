@@ -78,7 +78,8 @@ print("Jarvis is now listening... say 'stop' to exit.\n")
 #print(text_to_speech(out['messages'][-1].content))
 
 while True:
-    audio = speech_to_text()
+    #audio = speech_to_text()
+    audio = input()
     time.sleep(0.5)
     if not audio:
         continue
@@ -87,7 +88,8 @@ while True:
     
     if audio.lower() in ['exit', 'bye', 'quit', 'stop']:
         out = jarvis.invoke({'messages': [HumanMessage(content="Ok jarvis Thankyou for helping me")]},config=CONFIG)
-        text_to_speech(out['messages'][-1].content)
+        #text_to_speech(out['messages'][-1].content)
+        print(out['messages'][-1].content)
         break
         
     try:
@@ -98,8 +100,8 @@ while True:
         
         ai_msg  = result['messages'][-1].content
         print(f"Jarvis: {ai_msg}")
-        text_to_speech(ai_msg)
+        #text_to_speech(ai_msg)
     except Exception as e:
         print(f"Error is: {e}")
-        text_to_speech("Sorry sir, Something went Wrong please wait")
+        #text_to_speech("Sorry sir, Something went Wrong please wait")
         
