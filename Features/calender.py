@@ -13,8 +13,8 @@ SCOPES = ["https://www.googleapis.com/auth/calendar"]
 def get_calendar_service():
     creds = None
     
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("Features\token.json", SCOPES)
+    if os.path.exists("Features\tokens.json"):
+        creds = Credentials.from_authorized_user_file("Features\tokens.json", SCOPES)
 
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
@@ -22,7 +22,7 @@ def get_calendar_service():
         else:
             flow = InstalledAppFlow.from_client_secrets_file("Features\credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
-        with open("token.json", "w") as token:
+        with open("Features\tokens.json", "w") as token:
             token.write(creds.to_json())
 
     service = build("calendar", "v3", credentials=creds)
